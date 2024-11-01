@@ -4,6 +4,7 @@ using System.Data;
 using System.Windows;
 using Task16.Views;
 using Task16.ViewModels;
+using Task16.Models;
 
 namespace Task16;
 
@@ -15,10 +16,16 @@ public partial class App : Application
 
     private void Application_Startup(object sender, StartupEventArgs e)
     {
-        WindowSummary wnd = new WindowSummary();
+        Summary summary = new Summary();
+
+
         WindowSummaryViewModel wndvm = new WindowSummaryViewModel();
+        wndvm.Model = summary;
+        wndvm.Customers = summary.GetProductData();
+        WindowSummary wnd = new WindowSummary();
+        wnd.DataContext = wndvm;
         wnd.Show();
 
-        DBSQLConnection conn = new DBSQLConnection();
+        
     }
 }

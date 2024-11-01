@@ -12,25 +12,38 @@ namespace CSWork16_7.Connections
 {
     public class DBAccessConnection
     {
+        private OleDbConnection _connection;
+        private OleDbDataAdapter _adapter;
+        private string _connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=db.accdb";
+
+        public DataTable Data { get; private set; }
+
         public DBAccessConnection() 
         {
-            Connect();
+            Data = new DataTable();
+            _connection = new OleDbConnection(_connectionString);
+            InitAdapter();
         }
 
-        private void Connect()
+        public void Save()
         {
-            string connectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=db11.accdb";
-            using (OleDbConnection connection = new OleDbConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-                }
-                catch (Exception e)
-                {
-                    Trace.WriteLine(e.Message);
-                }
-            }
+            _adapter.Update(Data);
         }
+
+        private void InitAdapter()
+        {
+            _adapter = new OleDbDataAdapter();
+            string query;
+
+            query = "SELECT id, product_id, email, product_name FROM Products";
+            _adapter.SelectCommand = new OleDbCommand(query, _connection);
+
+            query = "INSERT INTO Products (id, email, product_id, product_name) " +
+                "VALUES(@Id, @email, @product_id, @product_name)";
+            _adapter.InsertCommand = new OleDbCommand(query, _connection);
+
+            _adapter.Fill(Data);
+        }
+
     }
 }

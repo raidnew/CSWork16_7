@@ -11,8 +11,23 @@
         <vm:WindowSummaryViewModel/>
     </Window.DataContext>
     <Grid>
-        <DataGrid ItemsSource="{Binding}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <DataGrid Grid.Column="0" ItemsSource="{Binding Customers}">
             
         </DataGrid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Row="0" Command="{Binding ClickAdd}">Add</Button>
+            <Button Grid.Row="1" Command="{Binding ClickEdit}">Edit</Button>
+            <Button Grid.Row="2" Command="{Binding ClickDelete}">Delete</Button>
+        </Grid>
     </Grid>
 </Window>
